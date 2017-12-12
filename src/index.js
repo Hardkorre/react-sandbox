@@ -7,11 +7,13 @@ import configureStore from './store/configureStore';
 import {Router, browserHistory} from 'react-router';
 import routes from './components/common/routes';
 import {loadCourses} from './actions/courseActions';
+import {loadAuthors} from './actions/authorActions';
 import './styles/styles.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const store = configureStore();
 store.dispatch(loadCourses());
+store.dispatch(loadAuthors());
 
 render(
     <Provider store={store}>
