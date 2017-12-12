@@ -15,6 +15,12 @@ class ManageCoursePage extends React.Component {
         };
 
         this.updateCoursesState = this.updateCoursesState.bind(this);
+        this.saveCourse = this.saveCourse.bind(this);
+    }
+
+    saveCourse(event) {
+        event.preventDefault();
+        this.props.actions.saveCourse(this.state.course);
     }
 
     updateCoursesState(event) {
@@ -29,6 +35,7 @@ class ManageCoursePage extends React.Component {
             <CourseForm 
                 allAuthors={this.props.authors}
                 onChange={this.updateCoursesState}
+                onSave={this.saveCourse}
                 course={this.state.course} 
                 errors={this.state.errors}
             />
