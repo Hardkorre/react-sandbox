@@ -6,17 +6,29 @@ import CourseForm from './CourseForm';
 
 class ManageCoursePage extends React.Component {
     constructor(props, context){
+
         super(props, context);
+
         this.state = {
             course: Object.assign({}, this.props.course),
             errors: {}
         };
+
+        this.updateCoursesState = this.updateCoursesState.bind(this);
+    }
+
+    updateCoursesState(event) {
+        const field = event.target.name;
+        let course = Object.assign({}, this.state.course);
+        course[field] = event.target.value;
+        return this.setState({course: course});
     }
 
     render() {
         return (
             <CourseForm 
                 allAuthors={this.props.authors}
+                onChange={this.updateCoursesState}
                 course={this.state.course} 
                 errors={this.state.errors}
             />
@@ -24,7 +36,6 @@ class ManageCoursePage extends React.Component {
     }
 }
 
-debugger;
 ManageCoursePage.propTypes = {
     course: PropTypes.object.isRequired,
     authors: PropTypes.array.isRequired,
@@ -32,6 +43,7 @@ ManageCoursePage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+    
     let course = {id: '', watchHref:'', title: '', authorId: '', length: '', category: ''};
 
     const authorsFormattedForDropdown = state.authors.map(author => {
