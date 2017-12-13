@@ -8,7 +8,7 @@ class ManageCoursePage extends React.Component {
     constructor(props, context){
 
         super(props, context);
-        debugger;
+        
         this.state = {
             course: Object.assign({}, props.course),
             errors: {}
@@ -39,7 +39,6 @@ class ManageCoursePage extends React.Component {
     }
 
     render() {
-        debugger;
         return (
             <CourseForm 
                 allAuthors={this.props.authors}
@@ -75,7 +74,6 @@ function getCourseById(courses, id) {
 
 function mapStateToProps(state, ownProps) {
     
-    debugger;
     const courseId = ownProps.params.id;
 
     let course = {id: '', watchHref:'', title: '', authorId: '', length: '', category: ''};
