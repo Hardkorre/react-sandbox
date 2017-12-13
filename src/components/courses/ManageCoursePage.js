@@ -8,9 +8,9 @@ class ManageCoursePage extends React.Component {
     constructor(props, context){
 
         super(props, context);
-
+        debugger;
         this.state = {
-            course: Object.assign({}, this.props.course),
+            course: Object.assign({}, props.course),
             errors: {}
         };
 
@@ -18,9 +18,17 @@ class ManageCoursePage extends React.Component {
         this.saveCourse = this.saveCourse.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.course.id != nextProps.course.id) {
+          // Necessary to populate form when existing course is loaded directly.
+          this.setState({course: Object.assign({}, nextProps.course)});
+        }
+    }
+
     saveCourse(event) {
         event.preventDefault();
         this.props.actions.saveCourse(this.state.course);
+        this.context.router.push('/course');
     }
 
     updateCoursesState(event) {
@@ -31,6 +39,7 @@ class ManageCoursePage extends React.Component {
     }
 
     render() {
+        debugger;
         return (
             <CourseForm 
                 allAuthors={this.props.authors}
@@ -49,9 +58,31 @@ ManageCoursePage.propTypes = {
     actions: PropTypes.object.isRequired
 };
 
+//Pull in the React Router context so router is available on this.context.router.
+ManageCoursePage.contextTypes = {
+    router: PropTypes.object
+};
+
+function getCourseById(courses, id) {
+    
+    const course = courses.filter(course => course.id == id);
+    
+    if (course) 
+        return course[0]; //since filter returns an array, have to grab the first.
+    
+        return null;
+  }
+
 function mapStateToProps(state, ownProps) {
     
+    debugger;
+    const courseId = ownProps.params.id;
+
     let course = {id: '', watchHref:'', title: '', authorId: '', length: '', category: ''};
+
+    if(courseId && state.courses.length > 0){
+        course = getCourseById(state.courses, courseId);
+    }
 
     const authorsFormattedForDropdown = state.authors.map(author => {
         return {
@@ -61,7 +92,7 @@ function mapStateToProps(state, ownProps) {
     });
 
     return {
-        state: course,
+        course: course,
         authors: authorsFormattedForDropdown
     };
 }
